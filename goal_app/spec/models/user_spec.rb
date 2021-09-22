@@ -34,12 +34,22 @@ RSpec.describe User, type: :model do
 
     context "if a user exists" do
       it "should return user" do
-        
+        expect(User.find_by_credentials(User.last.username, 'password_test')).to eq(User.last)
       end
     end
 
     context "if a user does not exists" do
-      it "should return nil"
+      it "should return nil" do
+        expect(User.find_by_credentials('dsfdfsdf', 'pasdksaf')).to eq(nil)
+      end
+    end
+  end
+
+  describe "::generate_session_token" do
+    it "should return a random string" do
+      token_1 = User.generate_session_token
+      token_2 = User.generate_session_token
+      expect(token_1).to_not eq(token_2)
     end
   end
 

@@ -8,7 +8,17 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6, allow_nil: true }
 
   def self.find_by_credentials(username, password)
+    user = User.find_by(username: username)
 
+    if user && user.is_password?(password)
+      user
+    else  
+      nil
+    end
+  end
+
+  def self.generate_session_token
+    SecureRandom::urlsafe_base64(16)
   end
 
   attr_reader :password
